@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import { stations, formatINR, tariffRange, hasAC, hasDormitory, ZONE_NAMES } from '../lib/data.js';
 
-// Top stations by major-city presence
 const topStationCodes = ['NDLS', 'HWH', 'CSTM', 'MAS', 'SBC', 'SC', 'BCT', 'PUNE', 'ADI', 'JP', 'LKO', 'NGP'];
 const featured = topStationCodes.map((c) => stations.find((s) => s.code === c)).filter(Boolean);
 
@@ -30,10 +29,8 @@ const schema = {
   description="Compare IRCTC retiring room tariffs, room types, and amenities at major Indian Railway stations. Independent guide with real fare bands, hourly booking info, and station-by-station details."
   schema={schema}
 >
-  <!-- HERO -->
   <section class="relative overflow-hidden">
     <div class="container-rail pt-16 md:pt-24 pb-12 md:pb-20 relative">
-      <!-- Decorative rail track -->
       <div class="absolute right-0 top-1/3 w-1/2 h-px bg-rail-ink/10 hidden md:block">
         <div class="absolute left-0 -top-1 w-2 h-2 rounded-full bg-rail-saffron"></div>
       </div>
@@ -66,7 +63,6 @@ const schema = {
         </div>
       </div>
 
-      <!-- Stats strip -->
       <div class="mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-px bg-rail-ink/10 border border-rail-ink/10 rounded-sm overflow-hidden">
         <div class="bg-rail-cream p-5 md:p-6">
           <p class="font-display font-bold text-3xl md:text-4xl text-rail-ink leading-none">{totalStations}+</p>
@@ -88,7 +84,6 @@ const schema = {
     </div>
   </section>
 
-  <!-- FEATURED STATIONS -->
   <section class="container-rail pt-8 pb-16">
     <div class="flex items-end justify-between mb-8">
       <div>
@@ -130,7 +125,6 @@ const schema = {
 
   <div class="container-rail"><div class="rail-divider"></div></div>
 
-  <!-- HOW IT WORKS -->
   <section class="container-rail pb-16">
     <p class="eyebrow mb-2">The basics</p>
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-10 max-w-2xl">
@@ -164,7 +158,6 @@ const schema = {
     </div>
   </section>
 
-  <!-- ZONES -->
   <section class="container-rail pb-20">
     <div class="bg-rail-ink text-rail-cream rounded-sm overflow-hidden">
       <div class="p-8 md:p-12 grid md:grid-cols-2 gap-10 items-center">
