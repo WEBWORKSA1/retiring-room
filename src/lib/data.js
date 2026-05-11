@@ -17,6 +17,7 @@ export const ZONE_NAMES = {
   SWR: 'South Western Railway',
   WR: 'Western Railway',
   WCR: 'West Central Railway',
+  KR: 'Konkan Railway',
 };
 
 export const ROOM_TYPE_LABELS = {
