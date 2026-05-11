@@ -1,0 +1,54 @@
+---
+const { city, stationName } = Astro.props;
+
+// Affiliate IDs are placeholders — replace post-signup
+const AFF = {
+  mmt: import.meta.env.PUBLIC_AFF_MMT ?? 'YOUR_MMT_ID',
+  oyo: import.meta.env.PUBLIC_AFF_OYO ?? 'YOUR_OYO_ID',
+  rdb: import.meta.env.PUBLIC_AFF_REDBUS ?? 'YOUR_REDBUS_ID',
+};
+
+const query = encodeURIComponent(`hotels near ${stationName} railway station`);
+const cityQ = encodeURIComponent(city);
+---
+
+<aside class="mt-10 ticket p-6 md:p-7 rounded-sm">
+  <p class="eyebrow mb-2">Plan B</p>
+  <h3 class="font-display text-xl md:text-2xl font-semibold mb-2">Rooms full or not available?</h3>
+  <p class="text-sm text-rail-steel mb-5 max-w-prose2">
+    Retiring rooms have limited inventory and require a confirmed PNR. If you can't get one for your dates,
+    these nearby budget options usually have same-day availability.
+  </p>
+  <div class="grid sm:grid-cols-3 gap-3">
+    <a
+      href={`https://www.makemytrip.com/hotels/hotel-listing/?checkin=&checkout=&city=${cityQ}&affiliateCode=${AFF.mmt}`}
+      target="_blank"
+      rel="sponsored noopener"
+      class="block p-4 bg-rail-cream2/40 border border-rail-ink/10 rounded-sm hover:border-rail-saffron transition-colors no-underline"
+    >
+      <p class="font-display font-semibold text-rail-ink mb-0.5">MakeMyTrip</p>
+      <p class="text-xs text-rail-steel">Hotels in {city}</p>
+    </a>
+    <a
+      href={`https://www.oyorooms.com/search?location=${cityQ}&ref=${AFF.oyo}`}
+      target="_blank"
+      rel="sponsored noopener"
+      class="block p-4 bg-rail-cream2/40 border border-rail-ink/10 rounded-sm hover:border-rail-saffron transition-colors no-underline"
+    >
+      <p class="font-display font-semibold text-rail-ink mb-0.5">OYO Rooms</p>
+      <p class="text-xs text-rail-steel">Budget stays in {city}</p>
+    </a>
+    <a
+      href={`https://www.redbus.in/hotels/search?q=${query}&aff=${AFF.rdb}`}
+      target="_blank"
+      rel="sponsored noopener"
+      class="block p-4 bg-rail-cream2/40 border border-rail-ink/10 rounded-sm hover:border-rail-saffron transition-colors no-underline"
+    >
+      <p class="font-display font-semibold text-rail-ink mb-0.5">redBus Hotels</p>
+      <p class="text-xs text-rail-steel">Near {stationName}</p>
+    </a>
+  </div>
+  <p class="text-[10px] uppercase tracking-wider text-rail-steel/60 mt-4">
+    Affiliate links — we may earn a commission at no extra cost to you.
+  </p>
+</aside>

@@ -1,0 +1,50 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-rail-ink/10 bg-rail-ink text-rail-cream/85">
+  <div class="container-rail py-14 grid gap-12 md:grid-cols-4">
+    <div class="md:col-span-2">
+      <div class="flex items-center gap-2.5 mb-4">
+        <span class="w-8 h-8 bg-rail-saffron rounded-sm flex items-center justify-center font-display font-bold text-rail-ink">R</span>
+        <span class="font-display font-semibold text-lg text-rail-cream">retiringroom</span>
+      </div>
+      <p class="text-sm leading-relaxed max-w-md text-rail-cream/65">
+        An independent guide to IRCTC retiring rooms at Indian Railway stations.
+        Compare tariffs, room types, and station amenities — then book directly
+        on the official IRCTC portal.
+      </p>
+      <p class="text-xs mt-5 text-rail-cream/45">
+        RetiringRoom.com is not affiliated with Indian Railways or IRCTC.
+        All bookings are made on the official rr.irctc.co.in portal.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="text-xs uppercase tracking-[0.2em] text-rail-saffron mb-3 font-display font-semibold">Browse</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/stations" class="text-rail-cream/75 hover:text-rail-saffron no-underline">All stations</a></li>
+        <li><a href="/cities" class="text-rail-cream/75 hover:text-rail-saffron no-underline">By city</a></li>
+        <li><a href="/states" class="text-rail-cream/75 hover:text-rail-saffron no-underline">By state</a></li>
+        <li><a href="/guides" class="text-rail-cream/75 hover:text-rail-saffron no-underline">Booking guides</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-xs uppercase tracking-[0.2em] text-rail-saffron mb-3 font-display font-semibold">Official</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="https://www.rr.irctc.co.in/" target="_blank" rel="noopener" class="text-rail-cream/75 hover:text-rail-saffron no-underline">IRCTC retiring rooms ↗</a></li>
+        <li><a href="https://www.irctc.co.in/" target="_blank" rel="noopener" class="text-rail-cream/75 hover:text-rail-saffron no-underline">IRCTC tickets ↗</a></li>
+        <li><a href="/guides/how-to-book" class="text-rail-cream/75 hover:text-rail-saffron no-underline">How to book</a></li>
+        <li><a href="/guides/cancellation-rules" class="text-rail-cream/75 hover:text-rail-saffron no-underline">Cancellation rules</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-rail-cream/10">
+    <div class="container-rail py-5 flex flex-col sm:flex-row gap-3 items-center justify-between text-xs text-rail-cream/50">
+      <p>© {year} retiringroom.com — Independent travel guide</p>
+      <p class="font-mono uppercase tracking-wider">made for the 1.4B</p>
+    </div>
+  </div>
+</footer>

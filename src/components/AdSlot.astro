@@ -1,0 +1,23 @@
+---
+const { slot = 'XXXXXXXXXX', format = 'auto', responsive = 'true' } = Astro.props;
+const CLIENT = import.meta.env.PUBLIC_ADSENSE_CLIENT ?? '';
+---
+
+{CLIENT && (
+  <ins
+    class="adsbygoogle block my-8"
+    style="display:block"
+    data-ad-client={CLIENT}
+    data-ad-slot={slot}
+    data-ad-format={format}
+    data-full-width-responsive={responsive}
+  ></ins>
+  <script is:inline>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+)}
+{!CLIENT && (
+  <div class="my-8 border border-dashed border-rail-ink/15 rounded-sm py-6 text-center text-xs text-rail-steel/50 uppercase tracking-widest">
+    Ad slot — enable after AdSense approval
+  </div>
+)}
