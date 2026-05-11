@@ -50,13 +50,21 @@ Until set, AdSense slots show a dashed placeholder and affiliate links use `YOUR
 
 ## Deploy to Vercel
 
-This repo is connected to Vercel automatically once you import it via the Vercel dashboard:
+### Option A — via GitHub (recommended)
 
-1. Go to https://vercel.com/new
-2. Import `WEBWORKSA1/retiring-room`
-3. Framework auto-detects as Astro — click Deploy
-4. Add custom domain: retiringroom.com (Settings → Domains)
-5. Point your DNS at Vercel
+This repo is already on GitHub at https://github.com/WEBWORKSA1/retiring-room.
+
+1. Go to vercel.com → New Project → Import Git Repository → WEBWORKSA1/retiring-room
+2. Framework auto-detects as Astro. Click Deploy.
+3. Add custom domain: retiringroom.com (Settings → Domains)
+
+### Option B — direct CLI
+
+```bash
+npm install -g vercel
+vercel --prod
+# Follow prompts; first deploy creates the project
+```
 
 ## Post-deploy checklist
 
