@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getStates, formatINR, tariffRange, ZONE_NAMES, hasAC, hasDormitory } from '../../lib/data.js';
+
+export function getStaticPaths() {
+  return getStates().map((s) => ({ params: { slug: s.slug }, props: { state: s } }));
+}
+
+const { state } = Astro.props;
+const title = `Retiring Rooms in ${state.state} — ${state.stations.length} Railway Stations`;
+const description = `IRCTC retiring rooms at ${state.stations.length} railway stations across ${state.state}. Tariffs, room types, and booking guides.`;
+---
+
+<Base title={title} description={description}>
+  <section class="container-rail py-12">
+    <nav class="text-xs text-rail-steel/70 mb-6 font-mono">
+      <a href="/" class="hover:text-rail-saffron2 no-underline">Home</a>
+      <span class="mx-1.5">/</span>
+      <a href="/states" class="hover:text-rail-saffron2 no-underline">States</a>
+      <span class="mx-1.5">/</span>
+      <span>{state.state}</span>
+    </nav>
+
+    <p class="eyebrow mb-2">{state.stations.length} stations indexed</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold mb-3">
+      Retiring rooms in {state.state}
+    </h1>
+    <p class="text-rail-steel max-w-prose2 mb-10">
+      All railway stations in {state.state} with IRCTC retiring room facilities.
+    </p>
+
+    <div class="overflow-x-auto -mx-5 px-5">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="border-b-2 border-rail-ink/20 text-left">
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink">Code</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink">Station</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink hidden md:table-cell">City</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink hidden lg:table-cell">Zone</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink">Features</th>
+            <th class="py-3 font-display font-semibold text-rail-ink text-right">From</th>
+          </tr>
+        </thead>
+        <tbody>
+          {state.stations.map((s) => {
+            const t = tariffRange(s);
+            return (
+              <tr class="border-b border-rail-ink/8 hover:bg-rail-cream2/30">
+                <td class="py-3 pr-4 font-mono text-xs text-rail-saffron2">{s.code}</td>
+                <td class="py-3 pr-4">
+                  <a href={`/stations/${s.slug}`} class="font-display font-semibold text-rail-ink hover:text-rail-saffron2 no-underline">{s.name}</a>
+                </td>
+                <td class="py-3 pr-4 text-rail-steel hidden md:table-cell">{s.city}</td>
+                <td class="py-3 pr-4 text-rail-steel hidden lg:table-cell font-mono text-xs">{s.zone}</td>
+                <td class="py-3 pr-4">
+                  <span class="inline-flex flex-wrap gap-1">
+                    {hasAC(s) && <span class="chip chip-ac text-[10px] py-0.5">AC</span>}
+                    {hasDormitory(s) && <span class="chip text-[10px] py-0.5">Dorm</span>}
+                    {s.hourly && <span class="chip chip-saffron text-[10px] py-0.5">Hourly</span>}
+                  </span>
+                </td>
+                <td class="py-3 text-right font-mono text-xs text-rail-ink">{t ? formatINR(t.min) : '—'}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</Base>

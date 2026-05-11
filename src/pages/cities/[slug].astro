@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCities, formatINR, tariffRange, ZONE_NAMES, hasAC, hasDormitory } from '../../lib/data.js';
+
+export function getStaticPaths() {
+  return getCities().map((c) => ({ params: { slug: c.slug }, props: { city: c } }));
+}
+
+const { city } = Astro.props;
+const title = `Retiring Rooms in ${city.city} — ${city.stations.length} Railway Stations`;
+const description = `IRCTC retiring rooms at ${city.stations.length} railway stations in ${city.city}, ${city.state}. Tariffs, room types, and booking guides for each station.`;
+---
+
+<Base title={title} description={description}>
+  <section class="container-rail py-12">
+    <nav class="text-xs text-rail-steel/70 mb-6 font-mono">
+      <a href="/" class="hover:text-rail-saffron2 no-underline">Home</a>
+      <span class="mx-1.5">/</span>
+      <a href="/cities" class="hover:text-rail-saffron2 no-underline">Cities</a>
+      <span class="mx-1.5">/</span>
+      <span>{city.city}</span>
+    </nav>
+
+    <p class="eyebrow mb-2">{city.state}</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold mb-3">
+      Retiring rooms in {city.city}
+    </h1>
+    <p class="text-rail-steel max-w-prose2 mb-10">
+      {city.stations.length} {city.stations.length === 1 ? 'station' : 'stations'} in {city.city}
+      with IRCTC retiring room facilities. Compare tariffs and room types below.
+    </p>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      {city.stations.map((s) => {
+        const t = tariffRange(s);
+        return (
+          <a href={`/stations/${s.slug}`} class="ticket p-5 no-underline hover:shadow-[0_4px_0_rgba(11,26,58,0.15),0_16px_32px_-12px_rgba(11,26,58,0.2)] transition-shadow">
+            <div class="flex items-start justify-between mb-3">
+              <div>
+                <p class="font-mono text-xs text-rail-saffron2 mb-1">{s.code}</p>
+                <h2 class="font-display text-xl font-semibold">{s.name}</h2>
+                <p class="text-xs text-rail-steel font-mono uppercase tracking-wider mt-1">{ZONE_NAMES[s.zone]}</p>
+              </div>
+              {s.hourly && <span class="chip chip-saffron">Hourly</span>}
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              {hasAC(s) && <span class="chip chip-ac">AC</span>}
+              {hasDormitory(s) && <span class="chip">Dorm</span>}
+            </div>
+            {t && (
+              <p class="text-xs text-rail-steel">
+                From <span class="price-board">{formatINR(t.min)}</span>
+              </p>
+            )}
+          </a>
+        );
+      })}
+    </div>
+  </section>
+</Base>

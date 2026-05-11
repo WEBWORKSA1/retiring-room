@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getStates } from '../../lib/data.js';
+
+const states = getStates();
+---
+
+<Base
+  title="Retiring Rooms by State — Indian Railway Stations"
+  description={`Browse IRCTC retiring rooms by state across ${states.length} Indian states and union territories.`}
+>
+  <section class="container-rail py-12">
+    <p class="eyebrow mb-2">By state</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold mb-3">States &amp; UTs</h1>
+    <p class="text-rail-steel max-w-prose2 mb-10">
+      Retiring rooms organized by state. {states.length} states and union territories with indexed stations.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      {states.map((s) => (
+        <a href={`/states/${s.slug}`} class="p-4 border border-rail-ink/10 bg-rail-chalk hover:border-rail-saffron rounded-sm no-underline transition-colors">
+          <p class="font-display font-semibold text-rail-ink">{s.state}</p>
+          <p class="text-xs text-rail-steel mt-1">{s.stations.length} {s.stations.length === 1 ? 'station' : 'stations'}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

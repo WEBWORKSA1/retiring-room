@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro';
+import { stations, ZONE_NAMES, tariffRange, formatINR, hasAC, hasDormitory } from '../../lib/data.js';
+
+const sortedStations = [...stations].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<Base
+  title="All Indian Railway Stations with Retiring Rooms — Complete List"
+  description={`Browse all ${stations.length} Indian Railway stations indexed with retiring room information — tariffs, room types, AC and dormitory availability.`}
+>
+  <section class="container-rail py-12">
+    <p class="eyebrow mb-2">Complete index</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold mb-3">
+      All stations with retiring rooms
+    </h1>
+    <p class="text-rail-steel max-w-prose2 mb-10">
+      {stations.length} Indian Railway stations indexed. Click any station for tariffs, room types, and booking details.
+    </p>
+
+    <div class="overflow-x-auto -mx-5 px-5">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="border-b-2 border-rail-ink/20 text-left">
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink">Code</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink">Station</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink hidden md:table-cell">City</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink hidden lg:table-cell">State</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink hidden lg:table-cell">Zone</th>
+            <th class="py-3 pr-4 font-display font-semibold text-rail-ink">Features</th>
+            <th class="py-3 font-display font-semibold text-rail-ink text-right">From</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedStations.map((s) => {
+            const t = tariffRange(s);
+            return (
+              <tr class="border-b border-rail-ink/8 hover:bg-rail-cream2/30 transition-colors">
+                <td class="py-3 pr-4 font-mono text-xs text-rail-saffron2">{s.code}</td>
+                <td class="py-3 pr-4">
+                  <a href={`/stations/${s.slug}`} class="font-display font-semibold text-rail-ink hover:text-rail-saffron2 no-underline">
+                    {s.name}
+                  </a>
+                </td>
+                <td class="py-3 pr-4 text-rail-steel hidden md:table-cell">{s.city}</td>
+                <td class="py-3 pr-4 text-rail-steel hidden lg:table-cell">{s.state}</td>
+                <td class="py-3 pr-4 text-rail-steel hidden lg:table-cell font-mono text-xs">{s.zone}</td>
+                <td class="py-3 pr-4">
+                  <span class="inline-flex flex-wrap gap-1">
+                    {hasAC(s) && <span class="chip chip-ac text-[10px] py-0.5">AC</span>}
+                    {hasDormitory(s) && <span class="chip text-[10px] py-0.5">Dorm</span>}
+                    {s.hourly && <span class="chip chip-saffron text-[10px] py-0.5">Hourly</span>}
+                  </span>
+                </td>
+                <td class="py-3 text-right font-mono text-xs text-rail-ink">{t ? formatINR(t.min) : '—'}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</Base>

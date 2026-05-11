@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCities } from '../../lib/data.js';
+
+const cities = getCities();
+---
+
+<Base
+  title="Retiring Rooms by City — Indian Railway Cities"
+  description={`Browse retiring rooms by city across ${cities.length} Indian cities with major railway stations.`}
+>
+  <section class="container-rail py-12">
+    <p class="eyebrow mb-2">By city</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold mb-3">Cities</h1>
+    <p class="text-rail-steel max-w-prose2 mb-10">
+      {cities.length} Indian cities with at least one major railway station offering retiring rooms.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      {cities.map((c) => (
+        <a href={`/cities/${c.slug}`} class="p-4 border border-rail-ink/10 bg-rail-chalk hover:border-rail-saffron rounded-sm no-underline transition-colors">
+          <p class="font-display font-semibold text-rail-ink">{c.city}</p>
+          <p class="text-xs text-rail-steel mt-1">
+            {c.state} · {c.stations.length} {c.stations.length === 1 ? 'station' : 'stations'}
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
