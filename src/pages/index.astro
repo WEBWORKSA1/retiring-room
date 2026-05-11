@@ -1,0 +1,202 @@
+---
+import Base from '../layouts/Base.astro';
+import { stations, formatINR, tariffRange, hasAC, hasDormitory, ZONE_NAMES } from '../lib/data.js';
+
+// Top stations by major-city presence
+const topStationCodes = ['NDLS', 'HWH', 'CSTM', 'MAS', 'SBC', 'SC', 'BCT', 'PUNE', 'ADI', 'JP', 'LKO', 'NGP'];
+const featured = topStationCodes.map((c) => stations.find((s) => s.code === c)).filter(Boolean);
+
+const totalStations = stations.length;
+const totalStates = new Set(stations.map((s) => s.state)).size;
+const totalCities = new Set(stations.map((s) => s.city)).size;
+const hourlyCount = stations.filter((s) => s.hourly).length;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'RetiringRoom',
+  url: 'https://retiringroom.com',
+  description: 'Independent guide to IRCTC retiring rooms at 600+ Indian Railway stations.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://retiringroom.com/stations?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<Base
+  title="RetiringRoom — IRCTC Retiring Rooms at 600+ Indian Railway Stations"
+  description="Compare IRCTC retiring room tariffs, room types, and amenities at major Indian Railway stations. Independent guide with real fare bands, hourly booking info, and station-by-station details."
+  schema={schema}
+>
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <div class="container-rail pt-16 md:pt-24 pb-12 md:pb-20 relative">
+      <!-- Decorative rail track -->
+      <div class="absolute right-0 top-1/3 w-1/2 h-px bg-rail-ink/10 hidden md:block">
+        <div class="absolute left-0 -top-1 w-2 h-2 rounded-full bg-rail-saffron"></div>
+      </div>
+
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="flap">PNR · CONFIRMED</span>
+          <span class="text-xs text-rail-steel/60 font-mono uppercase tracking-wider">est. 1621 · since the british raj</span>
+        </div>
+
+        <h1 class="hero-display mb-6">
+          A room.<br />
+          A platform.<br />
+          <span class="text-rail-saffron2 italic">A few hours' rest.</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-rail-steel max-w-prose2 leading-relaxed mb-8">
+          Indian Railways operates around <strong class="text-rail-ink">2,000 retiring rooms</strong> across
+          <strong class="text-rail-ink">600+ stations</strong>. Bookable from 3 to 48 hours, available only with a confirmed PNR — and
+          notoriously hard to find without insider knowledge. We index them.
+        </p>
+
+        <div class="flex flex-wrap gap-3">
+          <a href="/stations" class="btn-primary no-underline">
+            Browse all stations →
+          </a>
+          <a href="/guides/how-to-book" class="btn-secondary no-underline">
+            How to book
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-px bg-rail-ink/10 border border-rail-ink/10 rounded-sm overflow-hidden">
+        <div class="bg-rail-cream p-5 md:p-6">
+          <p class="font-display font-bold text-3xl md:text-4xl text-rail-ink leading-none">{totalStations}+</p>
+          <p class="text-xs uppercase tracking-widest text-rail-steel mt-2">Stations indexed</p>
+        </div>
+        <div class="bg-rail-cream p-5 md:p-6">
+          <p class="font-display font-bold text-3xl md:text-4xl text-rail-ink leading-none">{totalCities}</p>
+          <p class="text-xs uppercase tracking-widest text-rail-steel mt-2">Cities covered</p>
+        </div>
+        <div class="bg-rail-cream p-5 md:p-6">
+          <p class="font-display font-bold text-3xl md:text-4xl text-rail-ink leading-none">{totalStates}</p>
+          <p class="text-xs uppercase tracking-widest text-rail-steel mt-2">States & UTs</p>
+        </div>
+        <div class="bg-rail-cream p-5 md:p-6">
+          <p class="font-display font-bold text-3xl md:text-4xl text-rail-saffron2 leading-none">{hourlyCount}</p>
+          <p class="text-xs uppercase tracking-widest text-rail-steel mt-2">Hourly booking</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED STATIONS -->
+  <section class="container-rail pt-8 pb-16">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <p class="eyebrow mb-2">Most searched</p>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold">Top railway stations</h2>
+      </div>
+      <a href="/stations" class="text-sm font-medium text-rail-saffron2 no-underline">View all →</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {featured.map((s) => {
+        const t = tariffRange(s);
+        return (
+          <a href={`/stations/${s.slug}`} class="ticket p-5 hover:shadow-[0_4px_0_rgba(11,26,58,0.15),0_16px_32px_-12px_rgba(11,26,58,0.2)] transition-shadow no-underline group">
+            <div class="flex items-start justify-between mb-3">
+              <div>
+                <p class="font-mono text-xs text-rail-saffron2 mb-1">{s.code}</p>
+                <h3 class="font-display text-xl font-semibold leading-tight group-hover:text-rail-saffron2 transition-colors">{s.name}</h3>
+                <p class="text-sm text-rail-steel mt-0.5">{s.city}, {s.state}</p>
+              </div>
+              {s.hourly && <span class="chip chip-saffron">Hourly</span>}
+            </div>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              {hasAC(s) && <span class="chip chip-ac">AC</span>}
+              {hasDormitory(s) && <span class="chip">Dorm</span>}
+              <span class="chip">{ZONE_NAMES[s.zone] ?? s.zone}</span>
+            </div>
+            {t && (
+              <p class="text-xs text-rail-steel">
+                From <span class="price-board">{formatINR(t.min)}</span>
+                <span class="ml-1">/ slot</span>
+              </p>
+            )}
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <div class="container-rail"><div class="rail-divider"></div></div>
+
+  <!-- HOW IT WORKS -->
+  <section class="container-rail pb-16">
+    <p class="eyebrow mb-2">The basics</p>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-10 max-w-2xl">
+      Retiring rooms in three sentences.
+    </h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div>
+        <p class="font-mono text-rail-saffron2 text-sm mb-3">01 / WHAT</p>
+        <h3 class="font-display text-lg font-semibold mb-2">Short-stay rooms at stations.</h3>
+        <p class="text-sm text-rail-steel leading-relaxed">
+          Single, double, and dormitory accommodation operated by Indian Railways at major stations.
+          AC and non-AC variants. Run by station authorities or private licensees.
+        </p>
+      </div>
+      <div>
+        <p class="font-mono text-rail-saffron2 text-sm mb-3">02 / WHO</p>
+        <h3 class="font-display text-lg font-semibold mb-2">Confirmed PNR holders only.</h3>
+        <p class="text-sm text-rail-steel leading-relaxed">
+          Only valid for travellers with a confirmed or RAC train ticket. Wait-listed tickets do not qualify.
+          One booking at source and one at destination per PNR.
+        </p>
+      </div>
+      <div>
+        <p class="font-mono text-rail-saffron2 text-sm mb-3">03 / HOW LONG</p>
+        <h3 class="font-display text-lg font-semibold mb-2">3 to 48 hours.</h3>
+        <p class="text-sm text-rail-steel leading-relaxed">
+          Standard slots are 12 or 24 hours, with hourly bookings (minimum 3 hrs) at select stations.
+          Beyond 24 hrs, a 25% surcharge applies on subsequent slots.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONES -->
+  <section class="container-rail pb-20">
+    <div class="bg-rail-ink text-rail-cream rounded-sm overflow-hidden">
+      <div class="p-8 md:p-12 grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="text-xs uppercase tracking-[0.25em] text-rail-saffron mb-3 font-display font-semibold">
+            16 Zones, one network
+          </p>
+          <h2 class="font-display text-3xl md:text-4xl font-semibold leading-tight mb-4 text-rail-cream">
+            From Jammu Tawi to Kanyakumari — explore by zone or state.
+          </h2>
+          <p class="text-rail-cream/70 leading-relaxed mb-6">
+            Indian Railways is organised into 16 zones spanning ~68,000 km of track.
+            Browse retiring rooms by the zone you're travelling through, or jump straight to a state or city.
+          </p>
+          <div class="flex gap-3 flex-wrap">
+            <a href="/states" class="inline-flex items-center gap-2 bg-rail-saffron text-rail-ink px-5 py-3 font-medium tracking-wide uppercase text-sm rounded-sm no-underline hover:bg-rail-cream transition-colors">
+              By state →
+            </a>
+            <a href="/cities" class="inline-flex items-center gap-2 border border-rail-cream/30 text-rail-cream px-5 py-3 font-medium tracking-wide uppercase text-sm rounded-sm no-underline hover:bg-rail-cream/10 transition-colors">
+              By city →
+            </a>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-sm">
+          {Object.entries(ZONE_NAMES).map(([code, name]) => (
+            <div class="font-mono text-xs">
+              <span class="text-rail-saffron font-semibold mr-2">{code}</span>
+              <span class="text-rail-cream/60">{name.replace(' Railway', '')}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

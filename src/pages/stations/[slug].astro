@@ -1,0 +1,204 @@
+---
+import Base from '../../layouts/Base.astro';
+import AffiliateBlock from '../../components/AffiliateBlock.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { stations, formatINR, ROOM_TYPE_LABELS, ZONE_NAMES, tariffRange, hasAC, hasDormitory } from '../../lib/data.js';
+
+export function getStaticPaths() {
+  return stations.map((s) => ({
+    params: { slug: s.slug },
+    props: { station: s },
+  }));
+}
+
+const { station } = Astro.props;
+const t = tariffRange(station);
+
+const nearbyStations = stations
+  .filter((s) => s.state === station.state && s.code !== station.code)
+  .slice(0, 6);
+
+const title = `${station.name} (${station.code}) Retiring Room — Tariffs, Room Types & Booking Guide`;
+const description = `IRCTC retiring room at ${station.name} railway station in ${station.city}, ${station.state}. ${
+  station.room_types.length
+} room types${t ? `, tariffs from ${formatINR(t.min)} to ${formatINR(t.max)}` : ''}${station.hourly ? ', hourly booking available' : ''}. Confirmed PNR required.`;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LodgingBusiness',
+  name: `${station.name} Railway Retiring Room`,
+  description,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: station.city,
+    addressRegion: station.state,
+    addressCountry: 'IN',
+  },
+  geo: station.lat && station.lng ? {
+    '@type': 'GeoCoordinates',
+    latitude: station.lat,
+    longitude: station.lng,
+  } : undefined,
+  priceRange: t ? `${formatINR(t.min)}–${formatINR(t.max)}` : undefined,
+  amenityFeature: station.room_types.map((rt) => ({
+    '@type': 'LocationFeatureSpecification',
+    name: ROOM_TYPE_LABELS[rt] ?? rt,
+    value: true,
+  })),
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://retiringroom.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Stations', item: 'https://retiringroom.com/stations' },
+    { '@type': 'ListItem', position: 3, name: station.name, item: `https://retiringroom.com/stations/${station.slug}` },
+  ],
+};
+---
+
+<Base title={title} description={description} schema={[schema, breadcrumb]}>
+  <article class="container-rail py-10 md:py-14">
+    <!-- Breadcrumbs -->
+    <nav class="text-xs text-rail-steel/70 mb-6 font-mono">
+      <a href="/" class="hover:text-rail-saffron2 no-underline">Home</a>
+      <span class="mx-1.5">/</span>
+      <a href="/stations" class="hover:text-rail-saffron2 no-underline">Stations</a>
+      <span class="mx-1.5">/</span>
+      <span>{station.code}</span>
+    </nav>
+
+    <!-- Station header — ticket-stub style -->
+    <header class="ticket p-6 md:p-10 mb-10 relative overflow-hidden">
+      <div class="absolute right-0 top-0 bottom-0 w-2 bg-rail-saffron"></div>
+      <div class="flex flex-wrap items-start justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="font-mono bg-rail-ink text-rail-saffron px-3 py-1 text-sm tracking-widest rounded-sm">
+              {station.code}
+            </span>
+            <span class="text-xs text-rail-steel uppercase tracking-widest font-mono">
+              {ZONE_NAMES[station.zone] ?? station.zone}
+            </span>
+          </div>
+          <h1 class="font-display text-4xl md:text-6xl font-bold tracking-tight leading-none mb-3">
+            {station.name}
+          </h1>
+          <p class="text-rail-steel">
+            <a href={`/cities/${station.citySlug}`} class="text-rail-ink hover:text-rail-saffron2 no-underline font-medium">{station.city}</a>
+            <span class="mx-1.5">·</span>
+            <a href={`/states/${station.stateSlug}`} class="text-rail-ink hover:text-rail-saffron2 no-underline font-medium">{station.state}</a>
+          </p>
+        </div>
+
+        {t && (
+          <div class="text-right">
+            <p class="text-xs uppercase tracking-widest text-rail-steel mb-1">Tariff range</p>
+            <p class="font-display text-3xl md:text-4xl font-bold text-rail-ink leading-none">
+              {formatINR(t.min)}<span class="text-rail-steel text-xl"> – </span>{formatINR(t.max)}
+            </p>
+            <p class="text-xs text-rail-steel mt-1">per slot, before taxes</p>
+          </div>
+        )}
+      </div>
+
+      <div class="mt-6 pt-6 border-t border-rail-ink/10 flex flex-wrap gap-2">
+        {hasAC(station) && <span class="chip chip-ac">AC available</span>}
+        {hasDormitory(station) && <span class="chip">Dormitory</span>}
+        {station.hourly && <span class="chip chip-saffron">Hourly booking</span>}
+        <span class="chip">{station.room_types.length} room types</span>
+      </div>
+    </header>
+
+    <!-- Room types & tariffs -->
+    <section class="mb-12">
+      <p class="eyebrow mb-2">What you can book</p>
+      <h2 class="font-display text-2xl md:text-3xl font-semibold mb-6">Room types & tariffs</h2>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        {station.room_types.map((rt) => {
+          const tariff = station.tariff?.[rt];
+          const isAC = rt.endsWith('_ac');
+          const isDorm = rt.startsWith('dormitory');
+          return (
+            <div class="p-5 border border-rail-ink/10 bg-rail-chalk rounded-sm">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="font-display font-semibold text-lg leading-tight">
+                    {ROOM_TYPE_LABELS[rt] ?? rt}
+                  </h3>
+                  <p class="text-xs text-rail-steel mt-1 uppercase tracking-wider">
+                    {isDorm ? 'Shared bed' : (rt.startsWith('single') ? 'Single occupancy' : 'Double occupancy')}
+                    {isAC ? ' · Air-conditioned' : ' · Non-AC'}
+                  </p>
+                </div>
+                {isAC && <span class="chip chip-ac">AC</span>}
+              </div>
+              {tariff && (
+                <p class="mt-4 text-sm">
+                  <span class="price-board">{formatINR(tariff[0])} – {formatINR(tariff[1])}</span>
+                  <span class="text-rail-steel ml-2 text-xs">per 12-hr / 24-hr slot</span>
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <p class="text-xs text-rail-steel/70 mt-4 italic">
+        Tariffs are indicative bands compiled from publicly listed IRCTC rates and may vary by date,
+        room availability, and station-specific licensee rates. Final fare is shown on the IRCTC portal at checkout.
+      </p>
+    </section>
+
+    <AdSlot />
+
+    <!-- Booking summary -->
+    <section class="mb-12 bg-rail-ink text-rail-cream rounded-sm p-8 md:p-10">
+      <p class="text-xs uppercase tracking-[0.25em] text-rail-saffron mb-3 font-display font-semibold">
+        How to book at {station.name}
+      </p>
+      <ol class="space-y-4 text-rail-cream/85">
+        <li class="flex gap-4">
+          <span class="font-mono text-rail-saffron font-semibold flex-shrink-0">01</span>
+          <span>Have a confirmed or RAC PNR for a train arriving at or departing from <strong class="text-rail-cream">{station.code}</strong>.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="font-mono text-rail-saffron font-semibold flex-shrink-0">02</span>
+          <span>Visit <a href="https://www.rr.irctc.co.in/" target="_blank" rel="noopener" class="text-rail-saffron underline-offset-4">rr.irctc.co.in</a>, enter your PNR, and select <strong class="text-rail-cream">{station.name}</strong>.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="font-mono text-rail-saffron font-semibold flex-shrink-0">03</span>
+          <span>Pick room type and slot length ({station.hourly ? '3 hrs minimum · ' : ''}12 hrs · 24 hrs · 48 hrs). Pay online.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="font-mono text-rail-saffron font-semibold flex-shrink-0">04</span>
+          <span>Show the voucher and the ID matching your booking at check-in.</span>
+        </li>
+      </ol>
+      <a href="https://www.rr.irctc.co.in/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-7 bg-rail-saffron text-rail-ink px-5 py-3 font-medium tracking-wide uppercase text-sm rounded-sm no-underline hover:bg-rail-cream transition-colors">
+        Book on IRCTC ↗
+      </a>
+    </section>
+
+    <!-- Affiliate alternatives -->
+    <AffiliateBlock city={station.city} stationName={station.name} />
+
+    <!-- Nearby stations -->
+    {nearbyStations.length > 0 && (
+      <section class="mt-14">
+        <p class="eyebrow mb-2">Same state</p>
+        <h2 class="font-display text-2xl md:text-3xl font-semibold mb-6">Other stations in {station.state}</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {nearbyStations.map((n) => (
+            <a href={`/stations/${n.slug}`} class="p-4 border border-rail-ink/10 bg-rail-chalk hover:border-rail-saffron rounded-sm no-underline transition-colors">
+              <p class="font-mono text-xs text-rail-saffron2">{n.code}</p>
+              <p class="font-display font-semibold text-rail-ink mt-0.5">{n.name}</p>
+              <p class="text-xs text-rail-steel mt-0.5">{n.city}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+</Base>
