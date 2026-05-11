@@ -1,0 +1,33 @@
+# RetiringRoom
+
+> Independent guide to IRCTC retiring rooms at Indian Railway stations. Compare tariffs, room types, AC and non-AC variants, and hourly booking availability across 120+ stations and growing.
+
+## What this site covers
+
+- Station-by-station retiring room information for major Indian Railway stations
+- Tariff bands per room type (single AC/non-AC, double AC/non-AC, dormitory AC/non-AC)
+- Hourly booking availability (3-hour minimum at select stations)
+- Booking process, eligibility rules, and cancellation policies
+- City-level and state-level rollups
+
+## Booking is NOT done on this site
+
+All bookings are made on the official IRCTC retiring room portal: https://www.rr.irctc.co.in
+
+RetiringRoom.com is an independent informational site, not affiliated with Indian Railways or IRCTC.
+
+## Site sections
+
+- /stations — All indexed stations with tariff bands
+- /cities — Browse retiring rooms by city
+- /states — Browse retiring rooms by state
+- /guides — Booking process, rules, room types, women-traveller and senior-citizen advice
+
+## Key facts
+
+- Confirmed or RAC PNR required to book any retiring room
+- Standard slots: 12, 24, or 48 hours
+- Hourly slots: 3-hour minimum at select stations
+- Refund slabs: 90% (>48hr), 80% (24-48hr), 50% (4-24hr), nil (<4hr)
+- One room per PNR at source, one at destination
+- ID at check-in must match the name on the PNR

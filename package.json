@@ -1,0 +1,19 @@
+{
+  "name": "retiring-room",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "RetiringRoom.com — find and compare IRCTC retiring rooms at 600+ railway stations across India.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "scrape": "node scripts/scrape-stations.js"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.2.1",
+    "@astrojs/tailwind": "^5.1.4",
+    "astro": "^4.16.18",
+    "tailwindcss": "^3.4.17"
+  }
+}
