@@ -1,0 +1,65 @@
+---
+import Base from './Base.astro';
+import AdSlot from '../components/AdSlot.astro';
+
+const { title, description, updated, slug } = Astro.props;
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://retiringroom.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://retiringroom.com/guides' },
+    { '@type': 'ListItem', position: 3, name: title, item: `https://retiringroom.com/guides/${slug}` },
+  ],
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: updated || '2026-01-01',
+  dateModified: updated || '2026-01-01',
+  author: { '@type': 'Organization', name: 'RetiringRoom' },
+};
+---
+
+<Base title={`${title} — RetiringRoom`} description={description} schema={[articleSchema, breadcrumb]}>
+  <article class="container-rail py-10 md:py-14">
+    <nav class="text-xs text-rail-steel/70 mb-6 font-mono">
+      <a href="/" class="hover:text-rail-saffron2 no-underline">Home</a>
+      <span class="mx-1.5">/</span>
+      <a href="/guides" class="hover:text-rail-saffron2 no-underline">Guides</a>
+      <span class="mx-1.5">/</span>
+      <span>{title}</span>
+    </nav>
+
+    <header class="mb-10 max-w-prose2">
+      <p class="eyebrow mb-2">Guide</p>
+      <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-4">{title}</h1>
+      <p class="text-lg text-rail-steel leading-relaxed">{description}</p>
+      {updated && (
+        <p class="text-xs text-rail-steel/60 mt-4 font-mono uppercase tracking-wider">
+          Updated {updated}
+        </p>
+      )}
+    </header>
+
+    <div class="prose prose-rail max-w-prose2 font-body
+                prose-headings:font-display prose-headings:font-semibold prose-headings:text-rail-ink
+                prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+                prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+                prose-p:text-rail-steel prose-p:leading-relaxed
+                prose-strong:text-rail-ink prose-strong:font-semibold
+                prose-a:text-rail-saffron2 prose-a:no-underline hover:prose-a:underline
+                prose-ul:text-rail-steel prose-ol:text-rail-steel
+                prose-li:my-1
+                prose-code:bg-rail-cream2 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-rail-ink prose-code:font-mono prose-code:text-sm
+                prose-blockquote:border-l-rail-saffron prose-blockquote:border-l-4 prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:text-rail-ink">
+      <slot />
+    </div>
+
+    <AdSlot />
+  </article>
+</Base>
