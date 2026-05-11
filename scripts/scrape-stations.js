@@ -33,8 +33,6 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function fetchStationList() {
   console.log('[1/3] Fetching official IRCTC station list…');
-  // IRCTC exposes the station list via an internal endpoint behind their SPA.
-  // Replace this URL with the live endpoint discovered via DevTools Network tab.
   const url = 'https://www.rr.irctc.co.in/rrws/api/v1/stations';
 
   const res = await fetch(url, {
@@ -55,11 +53,7 @@ async function fetchStationList() {
 }
 
 async function enrichStation(station) {
-  // For each station, scrape redBus or IRCTC for room types, tariff, hourly availability.
-  // Implement per-station fetch here. Sleep between calls.
   await sleep(SLEEP_MS);
-
-  // Placeholder shape — fill in once you've inspected the live API responses.
   return {
     code: station.stationCode,
     name: station.stationName,
@@ -75,7 +69,6 @@ async function enrichStation(station) {
 }
 
 async function main() {
-  // Load existing seed so we don't lose curated data
   let existing = [];
   try {
     existing = JSON.parse(await fs.readFile(OUT_PATH, 'utf8'));
@@ -85,10 +78,8 @@ async function main() {
   }
   const existingByCode = new Map(existing.map((s) => [s.code, s]));
 
-  // 1. Fetch official station list
   const rawStations = await fetchStationList();
 
-  // 2. Enrich each one (skip those already seeded with high-quality data)
   console.log('[2/3] Enriching station data…');
   const enriched = [];
   for (const s of rawStations) {
@@ -103,7 +94,6 @@ async function main() {
     }
   }
 
-  // 3. Write back
   console.log('[3/3] Writing data/stations.json…');
   await fs.writeFile(OUT_PATH, JSON.stringify(enriched, null, 2));
   console.log(`     → wrote ${enriched.length} stations`);

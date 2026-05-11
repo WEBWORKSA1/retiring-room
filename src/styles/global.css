@@ -8,35 +8,26 @@
   :root {
     --grain-opacity: 0.035;
   }
-
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-
   body {
     @apply bg-rail-cream text-rail-ink font-body;
     font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv02';
-    /* Subtle ticket-paper grain */
-    background-image:
-      radial-gradient(circle at 1px 1px, rgba(11, 26, 58, 0.05) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, rgba(11, 26, 58, 0.05) 1px, transparent 0);
     background-size: 24px 24px;
   }
-
   h1, h2, h3, h4 {
     @apply font-display font-semibold tracking-tight text-rail-ink;
   }
-
   a {
     @apply underline-offset-4 decoration-rail-saffron/40 hover:decoration-rail-saffron transition-colors;
   }
-
   ::selection {
     @apply bg-rail-saffron text-rail-chalk;
   }
-
-  /* Custom scrollbar */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { @apply bg-rail-cream2; }
   ::-webkit-scrollbar-thumb { @apply bg-rail-ink/30 rounded-full; }
@@ -44,7 +35,6 @@
 }
 
 @layer components {
-  /* Ticket-stub card — perforated edge effect via radial gradients */
   .ticket {
     @apply relative bg-rail-chalk border border-rail-ink/10 shadow-[0_2px_0_rgba(11,26,58,0.08),0_8px_24px_-12px_rgba(11,26,58,0.15)];
     background-image:
@@ -53,37 +43,26 @@
     background-repeat: no-repeat;
     background-position: left top, right top;
   }
-
-  /* Departure-board flicker for the hero */
   .flap {
     font-family: 'JetBrains Mono', monospace;
     @apply inline-block bg-rail-ink text-rail-saffron px-2 py-0.5 tracking-widest text-xs font-medium uppercase;
     text-shadow: 0 0 8px rgba(255, 107, 26, 0.4);
   }
-
-  /* Tag chip used for room types, zones, amenities */
   .chip {
     @apply inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wider rounded-full border border-rail-ink/15 bg-rail-cream2/60 text-rail-steel;
   }
-
   .chip-ac {
     @apply border-rail-jade/30 bg-rail-jade/10 text-rail-jade;
   }
-
   .chip-saffron {
     @apply border-rail-saffron/40 bg-rail-saffron/10 text-rail-saffron2;
   }
-
-  /* Primary CTA button — stamp/embossed feel */
   .btn-primary {
     @apply inline-flex items-center gap-2 bg-rail-ink text-rail-cream px-5 py-3 font-medium tracking-wide uppercase text-sm rounded-sm shadow-[0_3px_0_#000] hover:shadow-[0_1px_0_#000] hover:translate-y-[2px] transition-all;
   }
-
   .btn-secondary {
     @apply inline-flex items-center gap-2 bg-rail-saffron text-rail-chalk px-5 py-3 font-medium tracking-wide uppercase text-sm rounded-sm shadow-[0_3px_0_#8B3A1F] hover:shadow-[0_1px_0_#8B3A1F] hover:translate-y-[2px] transition-all;
   }
-
-  /* Divider with a tiny rail-spike */
   .rail-divider {
     @apply relative h-px bg-rail-ink/15 my-12;
   }
@@ -91,28 +70,20 @@
     content: '';
     @apply absolute left-1/2 -translate-x-1/2 -top-1.5 w-3 h-3 rotate-45 bg-rail-saffron;
   }
-
-  /* Headline display */
   .hero-display {
     @apply font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tightest text-rail-ink;
   }
-
   .eyebrow {
     @apply text-xs uppercase tracking-[0.25em] font-medium text-rail-saffron2;
   }
-
-  /* Container */
   .container-rail {
     @apply max-w-6xl mx-auto px-5 sm:px-8;
   }
-
-  /* Number-board label for tariffs */
   .price-board {
     @apply font-mono bg-rail-ink text-rail-saffron px-2 py-1 text-sm rounded-sm;
   }
 }
 
-/* Subtle animation for hero */
 @keyframes blink {
   0%, 90%, 100% { opacity: 1; }
   95% { opacity: 0.4; }
