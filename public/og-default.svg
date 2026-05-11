@@ -6,31 +6,19 @@
   </defs>
   <rect width="1200" height="630" fill="#F7F1E3"/>
   <rect width="1200" height="630" fill="url(#grain)"/>
-
-  <!-- Top-right saffron block -->
   <rect x="900" y="0" width="300" height="630" fill="#0B1A3A"/>
   <polygon points="900,0 1200,0 1200,180 900,180 850,90" fill="#FF6B1A"/>
-
-  <!-- Title -->
   <text x="80" y="220" font-family="Georgia, serif" font-size="84" font-weight="700" fill="#0B1A3A">retiring<tspan fill="#FF6B1A">room</tspan></text>
   <text x="80" y="290" font-family="Georgia, serif" font-size="42" font-style="italic" fill="#3D4A5C">A room. A platform.</text>
   <text x="80" y="345" font-family="Georgia, serif" font-size="42" font-style="italic" fill="#3D4A5C">A few hours' rest.</text>
-
-  <!-- Stats -->
   <line x1="80" y1="420" x2="850" y2="420" stroke="#0B1A3A" stroke-opacity="0.15" stroke-width="1"/>
   <text x="80" y="490" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#0B1A3A">600+</text>
   <text x="80" y="525" font-family="Arial, sans-serif" font-size="16" fill="#3D4A5C" letter-spacing="2">STATIONS INDEXED</text>
-
   <text x="320" y="490" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#0B1A3A">28</text>
   <text x="320" y="525" font-family="Arial, sans-serif" font-size="16" fill="#3D4A5C" letter-spacing="2">STATES AND UTs</text>
-
   <text x="510" y="490" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#FF6B1A">₹120+</text>
   <text x="510" y="525" font-family="Arial, sans-serif" font-size="16" fill="#3D4A5C" letter-spacing="2">PER SLOT</text>
-
-  <!-- Domain -->
   <text x="80" y="595" font-family="monospace" font-size="22" fill="#3D4A5C" letter-spacing="3">RETIRINGROOM.COM</text>
-
-  <!-- Right side: ticket stub -->
   <g transform="translate(940, 280)">
     <text x="0" y="0" font-family="monospace" font-size="14" fill="#FF6B1A" letter-spacing="3">PNR · CONFIRMED</text>
     <text x="0" y="60" font-family="Georgia, serif" font-size="42" font-weight="700" fill="#F7F1E3">IRCTC</text>
