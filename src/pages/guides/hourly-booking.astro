@@ -1,0 +1,61 @@
+---
+import Guide from '../../layouts/Guide.astro';
+import { stations, ZONE_NAMES } from '../../lib/data.js';
+
+const hourlyStations = stations.filter((s) => s.hourly).sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<Guide
+  slug="hourly-booking"
+  title="Hourly booking stations — 3-hour minimum retiring rooms"
+  description="The Indian Railway stations that offer hourly retiring room bookings with a 3-hour minimum, ideal for short layovers."
+  updated="2026-02-15"
+>
+
+<p>
+  Standard retiring room slots are 12, 24, or 48 hours. But at select stations, IRCTC allows hourly bookings with
+  a 3-hour minimum — useful for layovers, daytime rest stops between connecting trains, or shower-and-go pit stops.
+</p>
+
+<h2>How hourly booking works</h2>
+<ul>
+  <li><strong>Minimum booking:</strong> 3 hours</li>
+  <li><strong>Maximum hourly slot:</strong> 11 hours (beyond that, the 12-hour slot is cheaper)</li>
+  <li><strong>Pricing:</strong> proportional to the 12-hour tariff, with a small premium per hour</li>
+  <li><strong>Availability:</strong> only at stations that have explicitly enabled hourly booking in the IRCTC system</li>
+</ul>
+<p>
+  Hourly slots are particularly common at stations with high transit volume — major junctions where passengers
+  often have 4–10 hour waits between connecting trains.
+</p>
+
+<h2>When hourly beats the 12-hour slot</h2>
+<p>
+  The breakeven is typically around 7–8 hours. If you need the room for less than 7 hours, hourly booking saves
+  money. Beyond that, the 12-hour slot is the better deal even if you don't use all the time.
+</p>
+
+<h2>Stations with hourly booking enabled</h2>
+<p>
+  Based on indexed data, the following {hourlyStations.length} stations currently offer hourly retiring room booking.
+  Click any station for current tariffs and room types.
+</p>
+
+<div class="not-prose grid sm:grid-cols-2 gap-3 my-8">
+  {hourlyStations.map((s) => (
+    <a href={`/stations/${s.slug}`} class="p-3 border border-rail-ink/10 bg-rail-chalk hover:border-rail-saffron rounded-sm no-underline transition-colors">
+      <p class="font-mono text-xs text-rail-saffron2">{s.code}</p>
+      <p class="font-display font-semibold text-rail-ink mt-0.5">{s.name}</p>
+      <p class="text-xs text-rail-steel mt-0.5">{s.city} · {ZONE_NAMES[s.zone]}</p>
+    </a>
+  ))}
+</div>
+
+<h2>Note on availability</h2>
+<p>
+  Even at hourly-enabled stations, hourly slots are subject to room availability. During peak holiday and festival
+  travel (Diwali, Holi, Chhath, Christmas–New Year, summer vacation), expect hourly inventory to be the first to
+  sell out. Book as far in advance as possible.
+</p>
+
+</Guide>

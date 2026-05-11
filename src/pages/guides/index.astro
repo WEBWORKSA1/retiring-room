@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const guides = [
+  { slug: 'how-to-book', title: 'How to book an IRCTC retiring room', desc: 'Step-by-step walkthrough from PNR to confirmation voucher.' },
+  { slug: 'pnr-requirements', title: 'PNR requirements & eligibility', desc: 'Which tickets qualify, what waitlisted travellers should know.' },
+  { slug: 'room-types', title: 'Single vs double vs dormitory', desc: 'How room types differ, what each costs, who they suit.' },
+  { slug: 'ac-vs-nonac', title: 'AC vs non-AC retiring rooms', desc: 'When the AC premium is worth it, and when it isn\'t.' },
+  { slug: 'cancellation-rules', title: 'Cancellation rules & refunds', desc: 'Refund slabs, timing rules, automatic cancellation triggers.' },
+  { slug: 'hourly-booking', title: 'Hourly booking stations', desc: 'Which stations allow 3-hour minimum bookings.' },
+  { slug: 'retiring-room-vs-hotel', title: 'Retiring room vs nearby hotel', desc: 'When to choose IRCTC, when to look outside the station.' },
+  { slug: 'check-in-process', title: 'Check-in process & ID rules', desc: 'What to carry, the ID-matching requirement, late check-in policy.' },
+  { slug: 'women-travellers', title: 'For women travellers', desc: 'Safety considerations, dormitory norms, station-specific notes.' },
+  { slug: 'senior-citizens', title: 'For senior citizens', desc: 'Accessibility, priority allocation, and what to expect.' },
+];
+---
+
+<Base
+  title="IRCTC Retiring Room Booking Guides"
+  description="Evergreen guides covering every aspect of booking, cancelling, and using IRCTC retiring rooms."
+>
+  <section class="container-rail py-12">
+    <p class="eyebrow mb-2">Guides</p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold mb-3">
+      Everything you need to know
+    </h1>
+    <p class="text-rail-steel max-w-prose2 mb-10">
+      Ten evergreen guides covering the rules, edge cases, and common mistakes when booking IRCTC retiring rooms.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      {guides.map((g) => (
+        <a href={`/guides/${g.slug}`} class="ticket p-5 no-underline hover:shadow-[0_4px_0_rgba(11,26,58,0.15),0_16px_32px_-12px_rgba(11,26,58,0.2)] transition-shadow">
+          <h2 class="font-display text-xl font-semibold mb-2 text-rail-ink">{g.title}</h2>
+          <p class="text-sm text-rail-steel">{g.desc}</p>
+          <p class="text-xs text-rail-saffron2 mt-3 font-mono uppercase tracking-wider">Read →</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
